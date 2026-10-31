@@ -1,0 +1,10 @@
+services:
+  chatroom:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      CHATROOM_SECRET: change-me-to-a-long-random-string
+    volumes: ["chatroom-data:/data"]
+    restart: unless-stopped
+volumes:
+  chatroom-data:

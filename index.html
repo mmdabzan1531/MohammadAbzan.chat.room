@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chatroom | محمد آبزن</title><meta name="theme-color" content="#1A1230">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/static/icons/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Chatroom"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script src="{{ url_for('static', filename='theme.js') }}?v={{ ASSET_V }}"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ ASSET_V }}"></head>
+<body class="auth-body">
+<svg width="0" height="0" style="position:absolute"><symbol id="star" viewBox="0 0 48 48"><polygon fill="currentColor" points="24,2 28.97,11.99 39.56,8.44 36.01,19.03 46,24 36.01,28.97 39.56,39.56 28.97,36.01 24,46 19.03,36.01 8.44,39.56 11.99,28.97 2,24 11.99,19.03 8.44,8.44 19.03,11.99"/><circle cx="24" cy="24" r="5" fill="var(--night)"/></symbol></svg>
+<div class="auth-tools"><button class="key small hidden-install" data-install-btn hidden>نصب برنامه</button><button class="key small round" data-theme-btn title="تغییر تم" aria-label="تغییر تم">◐</button></div>
+<main class="auth">
+  <section class="auth-hero">
+    <svg class="mark"><use href="#star"/></svg>
+    <h1>Chatroom</h1>
+    <p class="owner">محمد آبزن</p>
+    <p class="lead">اتاق گفتگوی زنده با گروه‌های جدا و تاریخچه‌ای که همیشه می‌ماند.</p>
+  </section>
+  <section class="auth-panel">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% for category,message in messages %}<div class="notice {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}
+    <div class="seg" role="tablist"><button type="button" class="key auth-tab" data-mode="login">ورود</button><button type="button" class="key auth-tab" data-mode="signup">ساخت حساب</button></div>
+    <form method="post" id="auth-form"><input type="hidden" name="action" id="auth-action" value="login">
+      <label for="username">شناسه کاربری</label><input id="username" name="username" autocomplete="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" placeholder="ali_123" required>
+      <label for="password">رمز عبور</label><input id="password" name="password" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ کاراکتر" required>
+      <label for="captcha">{{ captcha_question }}</label><input id="captcha" name="captcha" inputmode="numeric" autocomplete="off" placeholder="حاصل جمع" required>
+      <button class="key hot wide" type="submit" id="auth-submit">ورود</button>
+    </form>
+  </section>
+</main>
+<script>
+const tabs=[...document.querySelectorAll('.auth-tab')],action=document.getElementById('auth-action'),submit=document.getElementById('auth-submit'),pass=document.getElementById('password');
+function mode(m){action.value=m;tabs.forEach(t=>t.classList.toggle('on',t.dataset.mode===m));submit.textContent=m==='signup'?'ساخت حساب':'ورود';pass.autocomplete=m==='signup'?'new-password':'current-password';}
+tabs.forEach(t=>t.addEventListener('click',()=>mode(t.dataset.mode)));mode(new URLSearchParams(location.search).get('mode')==='signup'?'signup':'login');
+</script><script src="{{ url_for('static', filename='pwa.js') }}?v={{ ASSET_V }}"></script>
+</body></html>

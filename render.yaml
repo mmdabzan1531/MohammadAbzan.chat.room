@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: chatroom-mohammad-abzan
+    runtime: python
+    plan: starter            # دیسک دائمی فقط روی پلن‌های پولی Render وجود دارد
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --worker-class gthread --workers 1 --threads 100 --bind 0.0.0.0:$PORT app:app
+    healthCheckPath: /healthz
+    disk:
+      name: chatroom-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: CHATROOM_SECRET
+        generateValue: true
+      - key: CHATROOM_DATA_DIR
+        value: /var/data
